@@ -1,28 +1,36 @@
 package com.example.bankingproject.dto.user.request;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
+import com.example.bankingproject.domain.User;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
-@NoArgsConstructor
-@Getter @Setter
+@AllArgsConstructor
+@Data
+@Builder
 public class UserCreateRequest {
 
     @NotBlank(message = "아이디는 필수 입력입니다. ")
     private String username;
 
     @NotEmpty(message = "비밀번호는 필수 입력입니다.")
-    @Length(min = 4, max = 16, message = "비밀번호는 4글자이상 16글자 이하로 입력부탁합니다.")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{4,16}$",
+             message = "비밀번호는 4 ~ 16 자리이면서 1개 이상의 알파벳, 숫자, 특수문자를 포함해야합니다.")
+
     private String password;
 
+    private String checkedPassword;
+
+
     @Builder
-    public UserCreateRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public User toEntity() {
+        return User.builder()
+                .username(username)
+                .password(password)
+                .build();
     }
+
+
 }

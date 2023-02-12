@@ -1,73 +1,41 @@
 package com.example.bankingproject.controller;
 
 
-import com.example.bankingproject.domain.User;
+import com.example.bankingproject.dto.jwt.TokenInfo;
 import com.example.bankingproject.dto.user.request.UserCreateRequest;
+import com.example.bankingproject.dto.user.request.UserLoginRequestDto;
 import com.example.bankingproject.service.UserService;
+import com.example.bankingproject.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
+import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/user")
-@Controller
+@RestController
 public class UserController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
 
 
-    @GetMapping("/")
-    public String main () {
-        return "index";
+    @PostMapping("/login")
+    public TokenInfo login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
+        String username = userLoginRequestDto.getUsername();
+        String password = userLoginRequestDto.getPassword();
+        TokenInfo tokenInfo = userService.login(username, password);
+        return tokenInfo;
     }
 
-    @GetMapping("/new")
-    public String saveUser(Model model) {
-        model.addAttribute("userCreateRequest", new UserCreateRequest());
-        return "user/signup";
+    @PostMapping("/test")
+    public String test() {
+        return "success";
     }
-
-    @PostMapping("new")
-    public String saveUser(@Valid UserCreateRequest userCreateRequest,
-                           BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()) {
-            return "user/signup";
-        }
-
-        try {
-            User user = User.createUser(userCreateRequest, passwordEncoder);
-            userService.saveUser(user);
-        }catch (IllegalStateException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "user/signup";
-        }
-
-        return "redirect:/";
-    }
-
-    @GetMapping("/login")
-    public String loginUser() {
-        return "user/login";
-    }
-
-    @GetMapping("/login/error")
-    public String loginError(Model model) {
-        model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호가 틀렸습니다.");
-        return "user/login";
-    }
-
-    @GetMapping("/user/friends")
-    public void saveFriends() {
-
-    }
-
 
 }
