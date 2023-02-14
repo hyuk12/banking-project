@@ -1,12 +1,10 @@
 
 #  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 spring:
-  profiles:
-    include: jwt
   datasource:
 
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://localhost:3306/banking"
+    url: "jdbc:mysql://localhost:3306/bank"
     username: "root"
     password: "1234"
 
@@ -16,12 +14,15 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        ddl-auto: create
         show_sql: true
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
 
 logging:
   level:
-    com.example: debug
+    org:
+     hibernate:
+       type: trace
 
 
