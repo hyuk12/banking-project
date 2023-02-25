@@ -1,15 +1,28 @@
+
+#  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 spring:
   datasource:
-    url: "jdbc:mysql://localhost/banking"
+
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://localhost:3306/bank"
     username: "root"
     password: "1234"
-    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
 
   jpa:
-    hibernate:
-      ddl-auto: none
+    show-sql: true
     properties:
       hibernate:
+        ddl-auto: create
         show_sql: true
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
+
+logging:
+  level:
+    org:
+     hibernate:
+       type: trace
+
+
