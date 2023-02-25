@@ -1,34 +1,51 @@
 package com.example.bankingproject.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "accounts")
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@Getter @Setter
 public class Account {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        private Long userId;
+        private BigDecimal balance;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id", nullable = false, unique = true)
-    private User user;
+        public Account() {
+        }
 
-    @Column(nullable = false, unique = true)
-    private String accountNumber;
+        public Account(Long userId, BigDecimal balance) {
+                this.userId = userId;
+                this.balance = balance;
+        }
 
+        public Long getId() {
+                return id;
+        }
 
-    public Account(User user, String accountNumber) {
-        this.user = user;
-        this.accountNumber = accountNumber;
-    }
+        public void setId(Long id) {
+                this.id = id;
+        }
 
+        public Long getUserId() {
+                return userId;
+        }
+
+        public void setUserId(Long userId) {
+                this.userId = userId;
+        }
+
+        public BigDecimal getBalance() {
+                return balance;
+        }
+
+        public void setBalance(BigDecimal balance) {
+                this.balance = balance;
+        }
 }

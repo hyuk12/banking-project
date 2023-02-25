@@ -1,23 +1,19 @@
 package com.example.bankingproject.domain;
 
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "friends")
-@NoArgsConstructor
 public class Friend {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
     private Long userId;
-
-    @Column(name = "friend_id")
     private Long friendId;
+
+    public Friend() {
+    }
 
     public Friend(Long userId, Long friendId) {
         this.userId = userId;
@@ -26,6 +22,10 @@ public class Friend {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getUserId() {
